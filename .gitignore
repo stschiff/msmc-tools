@@ -1,2 +1,3 @@
 *.o
 getStats
+__pycache__

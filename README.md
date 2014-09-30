@@ -14,10 +14,15 @@ In this example, you generate multihetsep files for two diploid individuals. For
 
 In addition to the mask- and vcf file for each individual, you should use one additional mask per chromosome, the mappability mask, which gives all regions on the chromosome, on which short sequencing reads can be uniquely mapped. For humans (GRCh37), you can download these masks from my ftp site, see the readme for msmc.
 
-You can also provide negative masks, using the option `--negative_mask`. This is useful for example if you have an admixed sample and have a bed file which gives all regions of non-native ancestry that you would like to mask out.
+You can also apply masks in a negative way, using the option `--negative_mask`, which declares which regions should be _excluded_ from the analysis, instead of _included_, as with `--mask`. This is useful for example if you have an admixed sample and have a bed file which gives all regions of non-native ancestry that you would like to mask out. Any mask file, either by this option or by `--mask` can be given gzipped, using the standard file ending `.gz`.
 
 ### bamCaller.py
+
+* `--legend_file`: If you aim to phase your data against a reference panel, e.g. from 1000 Genomes (see section below about Phasing), you need your VCF to not only contain the variant sites of the sample, but also the genotypes at additional sites at which the panel is genotyped. This option takes a gzipped file of a format that is used in the IMPUTE and SHAPEIT reference panels. It is a simple tab-separated tabular file format with one header line which gets ignored. The only important columns for this purpose are: 1. the chromosome; 2. the position; 3. the reference allele; 4. the alternative allele; 5. the type of the variant, only sites of type `SNP` are considered here.
+
+
 ### cgCaller.py
+
 ### run_shapeit.sh
 ### getStats.d
 ### multihetsep_bootstrap.py
