@@ -97,12 +97,22 @@ class OrderedAlleles:
                 new.append(o)
         if len(new) > 0:
             self.ordered_alleles = new
+        for o in self.ordered_alleles:
+            del o[2 * child]
+            del o[2 * child]
+        self.ordered_alleles = unique(self.ordered_alleles)
     
     def getPrint(self):
         if len(self.ordered_alleles[0]) == 2 or len(self.ordered_alleles) == 1:
             return ''.join(self.ordered_alleles[0])
         else:
             return ','.join([''.join(o) for o in self.ordered_alleles])
+
+def strip_child(order, child):
+    return order[:2*child] + order[2*(child + 1):]
+
+def unique(list_of_lists):
+    return list(set([tuple(l) for l in list_of_lists]))
 
 class JoinedVcfIterator:
     def __init__(self, filenames, trios):
@@ -122,12 +132,11 @@ class JoinedVcfIterator:
         ordered_alleles = OrderedAlleles()
         
         for i, l in enumerate(self.current_lines):
-            if i not in minIndices and i not in [t[0] for t in trios]:
+            if i not in minIndices:
                 ordered_alleles.addGenotype(ref, ref, True)
             else:
                 alleles, geno, phased = l[2:5]
-                if i not in [t[0] for t in trios]:
-                    ordered_alleles.addGenotype(alleles[geno[0]], alleles[geno[1]], phased)
+                ordered_alleles.addGenotype(alleles[geno[0]], alleles[geno[1]], phased)
                 try:
                     self.current_lines[i] = next(self.vcfIterators[i])
                 except StopIteration:
