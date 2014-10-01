@@ -21,7 +21,7 @@ PHASED_VCF=$TMP_DIR/$NAME.onlyPhased.vcf
 SHAPEIT_OUT="$TMP_DIR/$NAME.phased.haps.gz $TMP_DIR/$NAME.phased.samples"
 MERGED_VCF=$DIR/$NAME.phased.vcf.gz
 
-bcftools-exp-rc view -M 2 -O z $VCF > $TMP_VCF
+bcftools view -M 2 -O z $VCF > $TMP_VCF
 
 # This step is necessary to make a list of sites to exclude from the main run:
 shapeit -check -V $TMP_VCF -M $MAP --input-ref $REF_PANEL --output-log $TMP_DIR/$NAME.alignments
@@ -33,12 +33,12 @@ shapeit -V $TMP_VCF -M $MAP --input-ref $REF_PANEL -O $SHAPEIT_OUT --exclude-snp
 shapeit -convert --input-haps $SHAPEIT_OUT --output-vcf $PHASED_VCF --output-log $TMP_DIR/$NAME.convert
 
 # zipping and indexing
-bcftools-exp-rc view -O z $PHASED_VCF > $PHASED_VCF.gz
-bcftools-exp-rc index -f $PHASED_VCF.gz
-bcftools-exp-rc index -f $VCF
+bcftools view -O z $PHASED_VCF > $PHASED_VCF.gz
+bcftools index -f $PHASED_VCF.gz
+bcftools index -f $VCF
 
 # merging phased and unphased vcfs, keeping all unphased sites from the original vcf, but replacing the phased ones.
-bcftools-exp-rc merge $VCF $PHASED_VCF.gz | awk '
+bcftools merge $VCF $PHASED_VCF.gz | awk '
   BEGIN {OFS="\t"}
   $0 ~ /^##/ {print}
   $0 ~ /^#CHROM/ {print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10}
@@ -46,4 +46,4 @@ bcftools-exp-rc merge $VCF $PHASED_VCF.gz | awk '
     if(substr($11, 1, 3) != "./.")
       $10 = $11
     print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
-  }' | bcftools-exp-rc view -O z > $MERGED_VCF
+  }' | bcftools view -O z > $MERGED_VCF

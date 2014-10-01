@@ -144,10 +144,14 @@ parser = argparse.ArgumentParser()
 parser.add_argument("files", nargs="+", help="Input VCF files")
 parser.add_argument("--mask", action="append", help="apply masks in bed format, should be given once for the calling mask from each individual, and in addition can be given for e.g. mappability or admixture masks")
 parser.add_argument("--negative_mask", action="append", help="same as mask, but interpreted as negative mask, so places where sites should be excluded")
+parser.add_argument("--trio", action="append", help="declare trio-relationships. This should be a string with a format <child>,<father>,<mother>, where the three samples are the names used in the VCFs. This option will automatically phase parental and maternal haplotypes where possible and remove the child VCF file from the resulting file.")
+
 args = parser.parse_args()
 
 nrIndidividuals = len(args.files)
 nrHaplotypes = 2 * nrIndidividuals
+# if args.trio:
+nrHaplotypes -= 2 * len(args.trio)
 
 sys.stderr.write("generating msmc input file with {} haplotypes\n".format(nrHaplotypes))
 
