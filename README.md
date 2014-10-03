@@ -80,3 +80,6 @@ Most lines should be self-explanatory. The sites starting with `pairwise hets(x,
 
 ### multihetsep_bootstrap.py
 This script generates bootstrap samples from a set of msmc input sites. Type `--multihetsep_bootstrap.py -h` to display options.
+
+### plot_utils.py
+This python script (python2.7) contains some plotting functions you can use. Have a look at the doc-strings in each function. Import this module to your python plotting script, or import them into some other script that outputs plotting data for another tool.
