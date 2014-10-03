@@ -14,7 +14,11 @@ In this example, you generate multihetsep files for two diploid individuals. For
 
 In addition to the mask- and vcf file for each individual, you should use one additional mask per chromosome, the mappability mask, which gives all regions on the chromosome, on which short sequencing reads can be uniquely mapped. For humans (GRCh37), you can download these masks from my ftp site, see the readme for msmc.
 
-You can also apply masks in a negative way, using the option `--negative_mask`, which declares which regions should be _excluded_ from the analysis, instead of _included_, as with `--mask`. This is useful for example if you have an admixed sample and have a bed file which gives all regions of non-native ancestry that you would like to mask out. Any mask file, either by this option or by `--mask` can be given gzipped, using the standard file ending `.gz`.
+Further Options:
+
+* `--negative_mask <file>`: This file declares which regions should be _excluded_ from the analysis, instead of _included_, as with `--mask`. This is useful for example if you have an admixed sample and have a bed file which gives all regions of non-native ancestry that you would like to mask out. Any mask file, either by this option or by `--mask` can be given gzipped, using the standard file ending `.gz`.
+* `--trio <child>,<father>,<mother>`: This option lets you specify the three members of a trio. All three fields must be integers specifying the index of the child/father/mother within the vcfs you gave as input, in order. So for example, if you had given three vcf files in the order father, mother, child, you need to give `--trio 2,0,1`. This option will automatically apply a constraint for phasing and also strip the child genotypes from the result.
+
 
 ### bamCaller.py
 
