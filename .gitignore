@@ -1,3 +1,4 @@
 *.o
 getStats
 __pycache__
+*.pyc
