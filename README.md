@@ -6,7 +6,7 @@ This repository contains helper scripts and utilities for [msmc](http://github.c
 This script is the main workhorse to generate input files for msmc. Here is a short synopsis:
 
     ./generate_multihetsep.py --mask=covered_sites_sample1_chr1.bed.txt.gz \
-                              --mask=covered_sites_sample1_chr1.bed.txt.gz \
+                              --mask=covered_sites_sample2_chr1.bed.txt.gz \
                               --mask=mappability_mask_chr1.bed.txt.gz \
                               sample1_chr1.vcf.gz sample2_chr1.vcf.gz
 
