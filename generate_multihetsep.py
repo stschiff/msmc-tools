@@ -12,7 +12,7 @@ class MaskIterator:
         if filename[-3:] == ".gz":
             self.file = io.TextIOWrapper(gzip.open(filename, "r"))
         else:
-            self.file = io.TextIOWrapper(open(filename, "r"))
+            self.file = open(filename, "r") #io.TextIOWrapper(open(filename, "r"))
         self.eof = False
         self.lastPos = 1
         self.negative = negative
@@ -169,6 +169,7 @@ parser.add_argument("files", nargs="+", help="Input VCF files")
 parser.add_argument("--mask", action="append", help="apply masks in bed format, should be given once for the calling mask from each individual, and in addition can be given for e.g. mappability or admixture masks")
 parser.add_argument("--negative_mask", action="append", help="same as mask, but interpreted as negative mask, so places where sites should be excluded")
 parser.add_argument("--trio", action="append", help="declare trio-relationships. This should be a string with a format <child_index>,<father_index>,<mother_index>, where the three fields are the indices of the samples in the trio. This option will automatically phase parental and maternal haplotypes where possible and remove the child VCF file from the resulting file. Can be given multiple times if you have multiple trios.")
+parser.add_argument("--chr", help="overwrite chromosomes in input files. Useful if chromosome names differ, such as chr1 vs. 1")
 
 args = parser.parse_args()
 
@@ -214,7 +215,8 @@ for chrom, snp_pos, alleles in joinedVcfIterator:
             print("processing pos {}".format(pos), file=sys.stderr)
     if mergedMask.getVal(snp_pos):
         if is_segregating(alleles):
-            print(chrom, snp_pos, nr_called, alleles, sep="\t")
+            c = chrom if not args.chr else args.chr
+            print(c, snp_pos, nr_called, alleles, sep="\t")
             nr_called = 0
   
   

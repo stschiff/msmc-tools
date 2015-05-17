@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import math
 import bisect
 from scipy.interpolate import interp1d 
@@ -11,7 +12,7 @@ class MSMCresult:
         self.times_left = []
         self.times_right = []
         self.lambdas = []
-        f.next() # skip header
+        next(f) # skip header
         for line in f:
             fields = line.strip().split()
             nr_lambdas = len(fields) - 3
@@ -31,7 +32,7 @@ class MSMCresult:
     def getInterp(self):
         x = [0.0] + [0.5 * (tl + tr) for tl, tr in zip(self.times_left, self.times_right)]
         y = [0.0] + self.lambdas[0]
-        return interp1d(x, y)
+        return (x[0], x[-1], interp1d(x, y))
 
 def popSizeStepPlot(filename, mu=1.25e-8, gen=30.0):
     """
