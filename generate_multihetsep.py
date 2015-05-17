@@ -97,19 +97,20 @@ class OrderedAlleles:
                 new.append(o)
         if len(new) > 0:
             self.ordered_alleles = new
-        for o in self.ordered_alleles:
-            del o[2 * child]
-            del o[2 * child]
         self.ordered_alleles = unique(self.ordered_alleles)
     
-    def getPrint(self):
-        if len(self.ordered_alleles[0]) == 2 or len(self.ordered_alleles) == 1:
-            return ''.join(self.ordered_alleles[0])
+    def getPrint(self, trios):
+        child_indices = []
+        for i in range(len(self.ordered_alleles[0])):
+            for child, father, mother in trios:
+                if i == 2 * child or i == 2 * child + 1:
+                    child_indices.append(i)
+        print_indices = [i for i in range(len(self.ordered_alleles[0])) if i not in child_indices]
+        stripped_alleles = unique([[o[i] for i in print_indices] for o in self.ordered_alleles])
+        if len(stripped_alleles[0]) == 2:
+            return ''.join([self.ordered_alleles[0][i] for i in print_indices])
         else:
-            return ','.join([''.join(o) for o in self.ordered_alleles])
-
-def strip_child(order, child):
-    return order[:2*child] + order[2*(child + 1):]
+            return ','.join([''.join(o) for o in stripped_alleles])
 
 def unique(list_of_lists):
     return list(set([tuple(l) for l in list_of_lists]))
@@ -143,7 +144,7 @@ class JoinedVcfIterator:
                     self.current_lines[i] = None
         for trio in self.trios:
             ordered_alleles.phase(trio)
-        return (chrom, pos, ordered_alleles.getPrint())
+        return (chrom, pos, ordered_alleles.getPrint(self.trios))
     
     def getMinIndices(self):
         activeLines = [(i, l) for i, l in enumerate(self.current_lines) if l]
