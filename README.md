@@ -90,3 +90,6 @@ This python script (python2.7) contains some plotting functions you can use. Hav
 
 ### makeMappabilityMask.py
 This is a little script that converts a fasta file with a mappability mask (see Heng Li's [SNPable](http://lh3lh3.users.sourceforge.net/snpable.shtml)) to a bed file. Have a look at the script, you should change the path to the fasta file.
+
+### ms2multihetsep.awk
+This is a little awk script that converts [ms](http://home.uchicago.edu/rhudson1/source/mksamples.html) output to MSMC input files. This will also work for the [SCRM simulator](http://scrm.github.io), which runs much faster than ms and is recommended! The script should be used like this `awk -f ms2multihetsep.awk < ms_output.txt > msmc_input.txt`.
