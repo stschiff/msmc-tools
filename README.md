@@ -86,4 +86,7 @@ Most lines should be self-explanatory. The sites starting with `pairwise hets(x,
 This script generates bootstrap samples from a set of msmc input sites. Type `--multihetsep_bootstrap.py -h` to display options.
 
 ### plot_utils.py
-This python script (python2.7) contains some plotting functions you can use. Have a look at the doc-strings in each function. Import this module to your python plotting script, or import them into some other script that outputs plotting data for another tool.
+This python script (python2.7) contains some plotting functions you can use. Have a look at the doc-strings in each function. Import this module to your python plotting script, or import them into some other script that outputs plotting data for another tool. Most plotting functions in this script return a pair of (x, y), where x and y are list of coordinates to plot in your favorite plotting tool.
+
+### makeMappabilityMask.py
+This is a little script that converts a fasta file with a mappability mask (see Heng Li's [SNPable](http://lh3lh3.users.sourceforge.net/snpable.shtml)) to a bed file. Have a look at the script, you should change the path to the fasta file.
