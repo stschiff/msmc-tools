@@ -92,4 +92,17 @@ This python script (python2.7) contains some plotting functions you can use. Hav
 This is a little script that converts a fasta file with a mappability mask (see Heng Li's [SNPable](http://lh3lh3.users.sourceforge.net/snpable.shtml)) to a bed file. Have a look at the script, you should change the path to the fasta file.
 
 ### ms2multihetsep.awk
-This is a little awk script that converts [ms](http://home.uchicago.edu/rhudson1/source/mksamples.html) output to MSMC input files. This will also work for the [SCRM simulator](http://scrm.github.io), which runs much faster than ms and is recommended! The script should be used like this `awk -v chr=<chr> -f ms2multihetsep.awk < ms_output.txt > msmc_input.txt`.
+This is a little awk script that converts [ms](http://home.uchicago.edu/rhudson1/source/mksamples.html) output to MSMC input files. This will also work for the [SCRM simulator](http://scrm.github.io), which runs much faster than ms and is recommended! The script needs some variables to be set:
+
+* chr: The chromosome name to be used in the MSMC file.
+* L: the genome length
+* sitesFile: The file to write to
+* treeFile: A file to write trees to, relevant if you simulate with the -T flag.
+
+The script should be used like this `awk -v chr=<chr> -v L=<L> -v sitesFile=<out> -v treeFile=<out_tree> -f ms2multihetsep.awk < ms_output.txt > msmc_input.txt`.
+  
+As an example, run this
+
+    ms 4 1 -t 10 -r 4 10000 -T | awk -v chr=1 -v L=10000 -v sitesFile=test.txt -v treeFile=test.trees.txt -f ms2multihetsep.awk
+
+The same command line works with `scrm`.
