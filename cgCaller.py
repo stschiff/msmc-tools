@@ -15,8 +15,15 @@ argparser.add_argument("sample_id", help="Sample ID to put into the VCF file")
 argparser.add_argument("out_mask", help="mask-file to write to")
 argparser.add_argument("input", help="Complete Genomics masterVarBeta file (uncompressed or compressed with gzip or bzip2)")
 argparser.add_argument("--max_pos", type=int, default=0)
+argparser.add_argument("--mastervar_version", default="2.0")
 argparser.add_argument("--legend_file", help="Impute2 reference panel legend file, can be gzipped or not")
 args = argparser.parse_args()
+
+if args.mastervar_version == "2.0":
+    qpass = "VQHIGH"
+elif args.mastervar_version == "2.4":
+    qpass = "PASS"
+
 
 mask_generator = utils.MaskGenerator(args.out_mask, args.chr)
 sites_parser = None
@@ -77,7 +84,12 @@ for line in input_file:
   
     if var_type == "snp":
         if zygosity in ["hom", "het-ref", "het-alt"]:
-            assert end - begin == 1
+            if args.mastervar_version == "2.0" and (end - begin) != 1:
+                assert (end - begin) == 1
+            elif args.mastervar_version == "2.4" and (end - begin) != 1:
+                continue
+
+            
             allele_ref = fields[7]
             if sites_parser is not None:
                 while not sites_parser.end and sites_parser.pos < begin + 1:
@@ -88,7 +100,7 @@ for line in input_file:
             allele_2 = fields[9]
             allele1_qual = fields[14]
             allele2_qual = fields[15]
-            if allele1_qual == "VQHIGH" and allele2_qual == "VQHIGH":
+            if allele1_qual == qpass and allele2_qual == qpass:
                 mask_generator.addCalledPosition(begin + 1)
                 allele_indices = []
                 alt_alleles = []
