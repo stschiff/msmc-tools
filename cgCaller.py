@@ -15,7 +15,7 @@ argparser.add_argument("sample_id", help="Sample ID to put into the VCF file")
 argparser.add_argument("out_mask", help="mask-file to write to")
 argparser.add_argument("input", help="Complete Genomics masterVarBeta file (uncompressed or compressed with gzip or bzip2)")
 argparser.add_argument("--max_pos", type=int, default=0)
-argparser.add_argument("--mastervar_version", default="2.0")
+argparser.add_argument("--mastervar_version", default="2.0", choices=['2.0','2.4'], help="version of masterVar file")
 argparser.add_argument("--legend_file", help="Impute2 reference panel legend file, can be gzipped or not")
 args = argparser.parse_args()
 
