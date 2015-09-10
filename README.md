@@ -106,3 +106,6 @@ As an example, run this
     ms 4 1 -t 10 -r 4 10000 -T | awk -v chr=1 -v L=10000 -v sitesFile=test.txt -v treeFile=test.trees.txt -f ms2multihetsep.awk
 
 The same command line works with `scrm`.
+
+### loop2Final.py
+This script generates a `*.final.txt` file from a `*.loop.txt` file. It can be used to look at individual iteration steps, or to "save" a run that crashed before the final file could be written.
