@@ -28,8 +28,8 @@ for fn in args.files:
         fields = line.strip().split()
         pos, nr_called_sites = map(int, fields[1:3])
         alleles = fields[3]
-        chunk_index = pos // args.chunk_size
-        rel_pos = pos % args.chunk_size
+        chunk_index = (pos - 1) // args.chunk_size
+        rel_pos = ((pos - 1) % args.chunk_size) + 1
         if nr_called_sites > rel_pos:
             nr_called_sites = rel_pos
         while chunk_index >= len(chunks_in_chrom):
