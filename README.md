@@ -107,3 +107,6 @@ The same command line works with `scrm`.
 
 ### loop2Final.py
 This script generates a `*.final.txt` file from a `*.loop.txt` file. It can be used to look at individual iteration steps, or to "save" a run that crashed before the final file could be written.
+
+### msmc2ms.py
+This script was kindly contributed by Daniel Weissman and converts msmc output (for a single population) to the necessary command line options for the program `ms` to simulate the population size history. The script is self-explanatory, type `./msmc2ms.py -h` to get a brief help.
