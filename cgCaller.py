@@ -12,7 +12,7 @@ import io
 argparser = argparse.ArgumentParser()
 argparser.add_argument("chr", help="Chromosome in the masterVar file")
 argparser.add_argument("sample_id", help="Sample ID to put into the VCF file")
-argparser.add_argument("out_mask", help="mask-file to write to")
+argparser.add_argument("out_mask", help="mask-file to write to, will be gzipped, so better add .gz to the end.")
 argparser.add_argument("input", help="Complete Genomics masterVarBeta file (uncompressed or compressed with gzip or bzip2)")
 argparser.add_argument("--max_pos", type=int, default=0)
 argparser.add_argument("--legend_file", help="Impute2 reference panel legend file, can be gzipped or not")
@@ -42,14 +42,15 @@ for line in input_file:
     if line[0] == '#' or line[0] == '>' or line == "\n":
         continue
     line_count += 1
-    if line_count % 100000 == 0:
-        sys.stderr.write("processing line {}\n".format(line_count))
       
     fields = line.strip().split()
     
     chrom = fields[2]
     begin = int(fields[3])
     end = int(fields[4])
+
+    if line_count % 100000 == 0:
+        sys.stderr.write("processing chromosome {}, position {}\n".format(chrom, begin))
     
     if chrom != args.chr:
         if chromosome_read:

@@ -166,7 +166,7 @@ class JoinedVcfIterator:
 
 parser = argparse.ArgumentParser()
 parser.add_argument("files", nargs="+", help="Input VCF files")
-parser.add_argument("--mask", action="append", help="apply masks in bed format, should be given once for the calling mask from each individual, and in addition can be given for e.g. mappability or admixture masks")
+parser.add_argument("--mask", action="append", help="apply masks in bed format, should be given once for the calling mask from each individual, and in addition can be given for e.g. mappability or admixture masks. Mask can be gzipped, if indicated by .gz file ending.")
 parser.add_argument("--negative_mask", action="append", help="same as mask, but interpreted as negative mask, so places where sites should be excluded")
 parser.add_argument("--trio", action="append", help="declare trio-relationships. This should be a string with a format <child_index>,<father_index>,<mother_index>, where the three fields are the indices of the samples in the trio. This option will automatically phase parental and maternal haplotypes where possible and remove the child VCF file from the resulting file. Can be given multiple times if you have multiple trios.")
 parser.add_argument("--chr", help="overwrite chromosomes in input files. Useful if chromosome names differ, such as chr1 vs. 1")
