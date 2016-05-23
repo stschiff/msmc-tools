@@ -199,7 +199,7 @@ Let's first plot the effective population sizes with the following R code:
 
 Obviously, you have to adjust the path to the final result files. The code produces this plot:
 
-![popSizePlot](popSizes.pdf)
+![popSizePlot](popSizes.jpg)
 
 You can see that both ancestral population had similar effective population sizes before 200,000 years ago, after which the European ancestors experienced a severe population bottleneck. Of course, this is relatively low resolution because we are only analysing one chromosome, but the basic signal is already visible. Note that here we have scaled times and rates using a generation time of 30 years and a mutation rate of 1.25e-8, which are the same values as used in the [initial publication on MSMC](http://www.nature.com/ng/journal/v46/n8/full/ng.3015.html).
 
@@ -234,7 +234,7 @@ OK, so we can now plot the relative cross-coalescence rate as a function of time
 
 which produces this plot:
 
-![CCR-Plot](ccrPlot.pdf)
+![CCR-Plot](ccrPlot.jpg)
 
 where you can see that the separation of (West-African) and European ancestors began already 200,000 years ago. The two populations then became progressively more separated over time, reaching a mid-point of 0.5 around 80,000 years ago. Since about 45,000 years, the two population seem fully separated on this plot. Note that even in simulations with a sharp separation, MSMC would not produce an infinitely sharp separation curve, but introduces a "smear" around the true separation time, so this plot is compatible also with the assumption that the two populations where already fully separated around 60,000 years ago, even though the relative cross-coalescence rate is not zero at that point yet.
 
