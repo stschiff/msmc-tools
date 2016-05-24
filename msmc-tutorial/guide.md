@@ -13,10 +13,12 @@ For this tutorial, I assume that the following executables are in the user's pat
 
     cgCaller.py
     generate_multihetsep.py
-    combinedCrossCoal.py
+    combineCrossCoal.py
     msmc2
 
-The first three are part of the `msmc-tools` repository, and you should copy those scripts into a location within the path, or create symbolic links to it. The `msmc2` executable should be a renamed binary (Version 2.0.0), or a compiled executable, also somewhere in the path.
+The first three are part of the `msmc-tools` repository, and you should copy those scripts into a location within the path, or create symbolic links to it. The `msmc2` executable should be a renamed binary (Version 2.0.0), or a compiled executable, also somewhere in the path. Note that `combineCrossCoal.py` also requires the [scipy](https://www.scipy.org) package to be installed (for python3).
+
+Finally, for plotting we will use [R](https://www.r-project.org).
 
 ## Data
 
