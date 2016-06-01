@@ -38,7 +38,7 @@ We will use the `masterVar`-files for each of the 6 samples, and use the `cgCall
     OUTDIR=/path/to/output_files
     CHR=chr1
     for IND in NA19238 NA19239 NA19240 NA12878 NA12891 NA12892; do
-        MASTERVAR=$(ls $MASTERVARDIR/masterVarBeta-$IND-*.tsv.bz2)
+        MASTERVAR=$(ls $MASTERVARDIR/masterVarBeta-$IND-*.tsv.chr1.bz2)
         OUT_MASK=$OUTDIR/$IND.$CHR.mask.bed.gz
         OUT_VCF=$OUTDIR/$IND.$CHR.vcf.gz
         cgCaller.py $CHR $IND $OUT_MASK $MASTERVAR | gzip -c > $OUT_VCF
