@@ -88,9 +88,9 @@ For generating the input files for MSMC, we will use a script called `generate_m
 
     #!/usr/bin/env bash
     
-    $INDIR=/path/to/VCF/and/mask/files
-    $OUTDIR=/path/to/output_files
-    $MAPDIR=/path/to/mappability/mask
+    INDIR=/path/to/VCF/and/mask/files
+    OUTDIR=/path/to/output_files
+    MAPDIR=/path/to/mappability/mask
     generate_multihetsep.py --chr 1 --mask $INDIR/NA12878.mask.bed.gz \
         --mask $MAPDIR/hs37d5_chr1.mask.bed $INDIR/NA12878.vcf.gz > $OUTDIR/NA12878.chr1.multihetsep.txt
 
