@@ -50,7 +50,7 @@ The line `MASTERVAR=$(ls ...)` uses bash command substitution to look for the ma
 
 Copy the code above into a shell script, named for example `runCGcaller.sh`, adjust the paths, make it executable via `chmod u+x runCGcaller.sh` and run it. You should see loggin messages indicating the currently processed position in the chromosome. Chromosome 1 has about 250 million sites, so you can estimate the waiting time.
 
-When finished (should take 10-20 minutes for all 6 samples), you should now have one `*.mask.bed` and one `*.vcf.gz` file for each individual.
+When finished (should take 10-20 minutes for all 6 samples), you should now have one `*.mask.bed.gz` and one `*.vcf.gz` file for each individual.
 
 ## Combining samples
  
