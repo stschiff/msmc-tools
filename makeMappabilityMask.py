@@ -2,7 +2,6 @@
 
 import gzip
 import sys
-import string
 
 class MaskGenerator:
   def __init__(self, filename, chr):
@@ -24,18 +23,17 @@ class MaskGenerator:
       self.lastStartPos = pos
       self.lastCalledPos = pos
 
-f = open("/lustre/scratch113/projects/msmc/ref/human_g1k_v37.mask_35_50.fa", "r")
-
-for line in f:
-  if line[0] == '>':
-    chr = string.split(line)[0][1:]
-    mask = MaskGenerator("/lustre/scratch113/projects/msmc/ref/masks/hs37d5_chr{}.mask.bed.gz".format(chr), chr)
-    pos = 0
-    continue
-  for c in string.strip(line):
-    pos += 1
-    if pos % 1000000 == 0:
-      sys.stderr.write("processing pos:{}\n".format(pos))
-    if c == "3":
-      mask.addCalledPosition(pos)
+with open("/lustre/scratch113/projects/msmc/ref/human_g1k_v37.mask_35_50.fa", "r") as f:
+  for line in f:
+    if line.startswith('>'):
+      chr = line.split()[0][1:]
+      mask = MaskGenerator("/lustre/scratch113/projects/msmc/ref/masks/hs37d5_chr{}.mask.bed.gz".format(chr), chr)
+      pos = 0
+      continue
+    for c in line.strip():
+      pos += 1
+      if pos % 1000000 == 0:
+        sys.stderr.write("processing pos:{}\n".format(pos))
+      if c == "3":
+        mask.addCalledPosition(pos)
       
