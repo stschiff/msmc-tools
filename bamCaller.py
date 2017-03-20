@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-# Use as: samtools mpileup -q 20 -Q 20 -C 50 -g -r <chr> -f <ref_file.fa> <input.bam> | bcftools view -cgI - | bamCaller.py <depth> <out_mask> > <out_vcf>
-# or with new samtools:
-# samtools-exp-rc mpileup -q 20 -Q 20 -C 50 -g -r <chr> -f <ref_file.fa> <input.bam> | bcftools-exp-rc call -c -S indels | bamCaller.py <depth> <out_mask> [Options...] | bcftools-exp-rc view -O z > <out_vcf.gz>
-
 import sys
 import re
 import gzip
