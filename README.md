@@ -112,3 +112,7 @@ This script generates a `*.final.txt` file from a `*.loop.txt` file. It can be u
 
 ### msmc2ms.py
 This script was kindly contributed by Daniel Weissman and converts msmc output (for a single population) to the necessary command line options for the program `ms` to simulate the population size history. The script is self-explanatory, type `./msmc2ms.py -h` to get a brief help.
+
+### vcfAllSiteParser.py
+This is a script that reads a VCF file from stdin and outputs a mask file and a VCF file. The input should be a VCF file for a single sample, that contains all sites that the individual has data for, including homozygous reference alleles. The output mask will be a bed file that gives the regions in which the individual was called, and the VCF file contains only the non-reference segregating sites.
+
