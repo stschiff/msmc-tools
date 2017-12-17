@@ -58,7 +58,10 @@ class VcfIterator:
     def __next__(self):
         line = next(self.file)
         while line[0] == "#":
-            line = next(self.file)
+            try:
+                line = next(self.file)
+            except StopIteration:
+                return None
         fields = line.strip().split()
         chrom = fields[0]
         pos = int(fields[1])
