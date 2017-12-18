@@ -34,8 +34,10 @@ class MaskIterator:
     def getVal(self, pos):
         assert pos >= self.lastPos
         self.lastPos = pos
-        while pos > self.end and not self.eof:
+        while not self.eof and pos > self.end:
             self.readLine()
+        if self.eof:
+            return None
         if pos >= self.start and pos <= self.end:
             return True if not self.negative else False
         else:
