@@ -193,10 +193,10 @@ Let's first plot the effective population sizes with the following R code:
     gen <- 30
     afrDat<-read.table("~/Data/SpringWorkshop/results/AFR.msmc2.final.txt", header=TRUE)
     eurDat<-read.table("~/Data/SpringWorkshop/results/EUR.msmc2.final.txt", header=TRUE)
-    plot(afrDat$left_time_boundary/mu*gen, (1/afrDat$lambda)/mu, log="x",ylim=c(0,100000),
+    plot(afrDat$left_time_boundary/mu*gen, (1/afrDat$lambda)/(2*mu), log="x",ylim=c(0,100000),
          type="n", xlab="Years ago", ylab="effective population size")
-    lines(afrDat$left_time_boundary/mu*gen, (1/afrDat$lambda)/mu, type="s", col="red")
-    lines(eurDat$left_time_boundary/mu*gen, (1/eurDat$lambda)/mu, type="s", col="blue")
+    lines(afrDat$left_time_boundary/mu*gen, (1/afrDat$lambda)/(2*mu), type="s", col="red")
+    lines(eurDat$left_time_boundary/mu*gen, (1/eurDat$lambda)/(2*mu), type="s", col="blue")
     legend("topright",legend=c("African", "European"), col=c("red", "blue"), lty=c(1,1))
 
 Obviously, you have to adjust the path to the final result files. The code produces this plot:
