@@ -166,9 +166,9 @@ Above we have run MSMC on each population individually. In order to better under
     INPUTDIR=/path/to/multihetsep/files
     OUTDIR=/path/to/output/dir
     
-    msmc2 -t 4 -I 0,1,4,5 -P 0,0,1,1 -s -p 1*2+15*1+1*2 -o $OUTDIR/AFR_EUR.msmc2 $INPUTDIR/EUR_AFR.chr1.multihetsep.txt
+    msmc2 -t 4 I 0-4,0-5,1-4,1-5 -s -p 1*2+15*1+1*2 -o $OUTDIR/AFR_EUR.msmc2 $INPUTDIR/EUR_AFR.chr1.multihetsep.txt
 
-OK, so here I am using 4 CPUs (`-t 4`), and I am running on the first two parental chromosomes in each subpopulation, so `-I 0,1,4,5`. Furthermore, I tell MSMC that the first and second two haplotypes chosen come from subpopulations 0 and 1, respectively: `-P 0,0,1,1`. If you wanted to analyse all eight haplotypes (will take consiberably longer), you would have had to say `-I 0,1,2,3,4,5,6,7 -P 0,0,0,0,1,1,1,1` (you could have omitted the `-I` flag in that case because it uses all chromosomes by default).
+OK, so here I am using 4 CPUs (`-t 4`), and I am running on the first two parental chromosomes in each subpopulation. If you wanted to analyse all eight haplotypes (will take consiberably longer), you would have had to say `-I 0-4,0-5,0-6,0-7,1-4,1-5,1-6,1-7,2-4,2-5,2-6,2-7,3-4,3-5,3-6,3-7`.
 
 The `-s` flag tells MSMC to skip sites with ambiguous phasing. As a rule of thumb: For population size estimates, we have found that unphased sites are not so much of a problem, but for cross-population analysis we typically remove those.
 
