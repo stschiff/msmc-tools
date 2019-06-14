@@ -71,7 +71,12 @@ class VcfIterator:
         for alt_a in fields[4].split(","):
             alleles.append(alt_a)
         geno = fields[9][:3]
-        phased = geno[1] == "|"
+        if len(geno) != 3 :
+                print ("Non-diploid SNP found and considered as unphased data: %s" % geno, file=sys.stderr)
+                phased = False
+                geno = "%s/%s" % (geno[0], geno[0])
+        else :
+                phased = geno[1] == "|"
         return (chrom, pos, tuple(alleles), (int(geno[0]), int(geno[2])), phased)
 
 class OrderedAlleles:
