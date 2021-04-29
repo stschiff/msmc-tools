@@ -22,7 +22,7 @@ Finally, for plotting we will use [R](https://www.r-project.org).
 
 ## Data
 
-All input data and intermediate files for this tutorial can be found as a gzipped file [here](https://oc.gnz.mpg.de/owncloud/index.php/s/786PRKqWBYXm0YT). 
+All input data and intermediate files for this tutorial can be found as a gzipped file [here](https://shh-cloud.gnz.mpg.de/index.php/s/TA97LimSB7TFPgi). 
 
 For this lesson, we will use two trios from the publically available "69 genomes" data set published by [Complete Genomics](http://www.completegenomics.com/public-data/69-genomes/)
 
