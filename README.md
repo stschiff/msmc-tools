@@ -1,6 +1,6 @@
 # MSMC Tools
 
-This repository contains helper scripts and utilities for [msmc](http://github.com/stschiff/msmc) and [msmc2](http://github.com/stschiff/msmc2) (so far not yet published). Most scripts have a little built in help, which can be invoked with the option -h.
+This repository contains helper scripts and utilities for [msmc](http://github.com/stschiff/msmc) and [msmc2](http://github.com/stschiff/msmc2). Most scripts have a little built in help, which can be invoked with the option -h.
 
 ### generate_multihetsep.py
 This script is the main workhorse to generate input files for msmc for one chromosome. Here is a short synopsis:
