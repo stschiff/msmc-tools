@@ -22,7 +22,7 @@ Finally, for plotting we will use [R](https://www.r-project.org).
 
 ## Data
 
-All input data and intermediate files for this tutorial can be browsed [here](https://share.eva.mpg.de/index.php/s/swpTM4mNK7gG7nw). A compressed zip file can be found [here](https://share.eva.mpg.de/index.php/s/3SpTYGZwdde52Yr). 
+All input data and intermediate files for this tutorial can be found [here](https://share.eva.mpg.de/index.php/s/swpTM4mNK7gG7nw).
 
 For this lesson, we will use two trios from the publically available "69 genomes" data set published by [Complete Genomics](http://www.completegenomics.com/public-data/69-genomes/), which are already included in the tutorial files above. You will find the so called "MasterVarBeta" files for six individuals for chromosome 1 in the `cg_data` subdirectory in the tutorial files. Some information on the six samples: The first three form a father-mother-child trio from the West-African Yoruba, a people living in Nigeria. Here, NA19240 is the offspring, and NA19238 and NA19239 are the two parents. The second three samples form a father-mother-child trio from Utah (USA), with unspecified European ancestry. Here, NA12878 is the offspring, and NA12891 and NA12892 are the parents.
 
