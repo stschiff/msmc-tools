@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import argparse
-from audioop import mul
 import plot_utils
 
 
