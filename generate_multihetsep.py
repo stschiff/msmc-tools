@@ -51,8 +51,9 @@ class MergedMask:
         return all((m.getVal(pos) for m in self.maskIterators))
 
 class VcfIterator:
-    def __init__(self, filename):
+    def __init__(self, filename, as_phased):
         self.file = io.TextIOWrapper(gzip.open(filename, "r"))
+        self.as_phased = as_phased
     
     def __iter__(self):
         return self
@@ -73,10 +74,10 @@ class VcfIterator:
         geno = fields[9][:3]
         if len(geno) != 3 :
                 print ("Non-diploid SNP found and considered as unphased data: %s" % geno, file=sys.stderr)
-                phased = False
+                phased = self.as_phased
                 geno = "%s/%s" % (geno[0], geno[0])
         else :
-                phased = geno[1] == "|"
+                phased = self.as_phased or (geno[1] == "|")
         return (chrom, pos, tuple(alleles), (int(geno[0]), int(geno[2])), phased)
 
 class OrderedAlleles:
@@ -126,8 +127,8 @@ def unique(list_of_lists):
     return list(set([tuple(l) for l in list_of_lists]))
 
 class JoinedVcfIterator:
-    def __init__(self, filenames, trios):
-        self.vcfIterators = [VcfIterator(f) for f in filenames]
+    def __init__(self, filenames, trios, as_phased):
+        self.vcfIterators = [VcfIterator(f, as_phased) for f in filenames]
         self.current_lines = [next(v) for v in self.vcfIterators]
         self.trios = trios
     
@@ -180,6 +181,7 @@ parser.add_argument("--mask", action="append", help="apply masks in bed format, 
 parser.add_argument("--negative_mask", action="append", help="same as mask, but interpreted as negative mask, so places where sites should be excluded")
 parser.add_argument("--trio", action="append", help="declare trio-relationships. This should be a string with a format <child_index>,<father_index>,<mother_index>, where the three fields are the indices of the samples in the trio. This option will automatically phase parental and maternal haplotypes where possible and remove the child VCF file from the resulting file. Can be given multiple times if you have multiple trios.")
 parser.add_argument("--chr", help="overwrite chromosomes in input files. Useful if chromosome names differ, such as chr1 vs. 1")
+parser.add_argument("--as_phased", action="store_true", help="considered uphased genotypes as phased. Saves resources when only pairs of haplotypes within individuals are considered.")
 
 args = parser.parse_args()
 
@@ -192,7 +194,12 @@ nrHaplotypes = 2 * (nrIndidividuals - len(trios))
 
 sys.stderr.write("generating msmc input file with {} haplotypes\n".format(nrHaplotypes))
 
-joinedVcfIterator = JoinedVcfIterator(args.files, trios)
+as_phased = False
+if args.as_phased:
+    as_phased = True
+    sys.stderr.write("Genotypes considered as phased. Only intra-genotype haplotype comparisons are valid!\n")
+
+joinedVcfIterator = JoinedVcfIterator(args.files, trios, as_phased)
 maskIterators = []
 if args.mask:
     for f in args.mask:
