@@ -1,4 +1,4 @@
-# MSMC Tutorial
+# MSMC2 Tutorial
 
 ## Prerequisites
 Download a suitable binary for MSMC2 (Version 2.0.0) from here:
@@ -283,3 +283,23 @@ You can install the [demesdraw](https://grahamgower.github.io/demesdraw/latest/q
 which creates this plot:
 
 ![Demes_plot](EUR.msmc2.final.demes.jpg)
+
+## Estimating the local tMRCA states
+
+MSMC2, like MSMC, contains a tool called `decode`. It can be compiled by running `make build/decode`, which will put the executable under the `build` directory. This program takes as input file the standard MSMC2 input file for a single chromosome and outputs the posterior probabilities for each state. You run it like this:
+
+    build/decode -m 0.0005 -r 0.0004 <input_file> > posteriors.txt
+
+Type `build/decode` for a short help. The options `-m` and `-r` specify the scaled mutation- and recombination rates, respectively. Ideally, the scaled mutation rate should be set to half the heterozygosity in your data (half because here we scale with 2N, and the heterozygosity is scaled by 4N). In practice, for this tool the precise value is not too important. For example, in humans, I usually just assume a heterozygosity of 0.001 for Africans, and 0.00075 for Non-Africans, so I put either `-m 0.0005` for Africans or `-m 0.000375` for Non-Africans. The recombination rate does not affect results strongly, either, and I usually put it to to about 80% of the mutation rate, so `-r 0.0004` for Africans and `-r 0.0003` or so for Non-Africans.
+
+The first row of the output is a header row specifying the lower ends of the time boundaries for each state. The rest of the output is a large matrix. At every row, the first value is the position in the genome, and the values from the second position are the posterior probabilities for all hidden tMRCA states in the model. The positions are by default spaced every 1000 basepairs, but that can be controlled with the `-s` flag.
+
+Note that the number of states only corresponds to the number of time intervals if your input file contains only two haplotypes (PSMC mode). For more than 2 haplotypes, MSMC's hidden states also span the possible pairs of first coalescence. So for example, for four haplotypes, every time interval contains 6 hidden states, corresponding to the pairings 0,1; 0,2; 0,3; 1,2; 1,3; 2,3; where 0 denotes the first haplotype and 3 denotes the fourth haplotype. So with 4 time intervals (default) you have 240 hidden states, all of which are output in this matrix. Usually, I think this tool makes most sense in PSMC mode, so with just two input haplotypes.
+
+As a first step, I recommend plotting the matrix as an image plot with squares for each matrix entry. This would then space all the states equally. It is more difficult to make a plot with the correct time boundaries, as that requires plotting squares with variable height (this is what has been done in Figure 1b of the paper).
+
+Note that the scaled time boundaries are written out as a header in the output. They are scaled in units of 2Ne generations. If you want to scale this to generations, you will have to multiply by 2Ne, where Ne is indirectly specified by the scaled mutation rate that you've input (which you give as 2Ne*mu). So specifically, for a scaled mutation rate mu-hat and an actual per-generation mutation rate of mu, you would first compute 2Ne as mu-hat / mu, and then take that to scale the time units. So all in all:
+
+real_time = scaled_time * mu-hat / mu
+
+where mu-hat is the number you've input for `-m`.
