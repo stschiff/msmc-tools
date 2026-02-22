@@ -114,7 +114,39 @@ This script generates a `*.final.txt` file from a `*.loop.txt` file. It can be u
 This script was kindly contributed by Daniel Weissman and converts msmc output (for a single population) to the necessary command line options for the program `ms` to simulate the population size history. The script is self-explanatory, type `./msmc2ms.py -h` to get a brief help.
 
 ### vcfAllSiteParser.py
-This is a script that reads a VCF file from stdin and outputs a mask file and a VCF file. The input should be a VCF file for a single sample, that contains all sites that the individual has data for, including homozygous reference alleles. The output mask will be a bed file that gives the regions in which the individual was called, and the VCF file contains only the non-reference segregating sites.
+This is a Python 3 script that reads a VCF file from stdin and outputs a mask file (BED) and a VCF file. The input should be a VCF file for a single sample, that contains all sites that the individual has data for, including homozygous reference alleles. The output mask will be a bed file that gives the regions in which the individual was called, and the VCF file contains only the non-reference segregating sites.
+
+There are different modes to be run
+
+1. Original mode (single chromosome, output to stdout)
+
+Outputs the filtered VCF directly to standard output, preserving the original behavior:
+
+```bash
+cat input.vcf | python3 vcfAllSiteParser.py chr1 mask.bed.gz > output.vcf
+```
+
+or if using gzipped input and output:
+
+```bash
+zcat input.vcf.gz | python3 vcfAllSiteParser.py chr1 mask.bed.gz | gzip > output.vcf.gz
+```
+
+2. Original mode (single chromosome, output to VCF file)
+
+Outputs the filtered VCF to a specified file, supports gzipped output if filename ends with .gz:
+
+```bash
+cat input.vcf | python3 vcfAllSiteParser.py chr1 mask.bed.gz output.vcf.gz
+```
+
+3. Split mode (multiple chromosomes)
+
+Splits the input VCF by chromosome and outputs separate mask and VCF files for each chromosome. Input VCF must be sorted by chromosome.
+
+```bash
+cat input.vcf | python3 vcfAllSiteParser.py --splitChromosomes mask_prefix vcf_prefix
+```
 
 ### vcfAllSiteParser_AllowMultiallelic.py
 This is a modified version of the `vcfAllSiteParser.py` script that takes into account multiallelic sites. Usage and output are otherwise the same as for `vcfAllSiteParser.py`. See the header of the script for further details.
