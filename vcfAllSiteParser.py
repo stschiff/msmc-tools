@@ -31,7 +31,7 @@ class MaskGenerator:
 
 if len(sys.argv) < 3:
     print("too few arguments:")
-    print("Usage: ./vcfCaller.py <chrom> <mask_out> > <vcf_out>")
+    print("Usage: ./vcfAllSiteParser.py <chrom> <mask_out> > <vcf_out>")
     print("Reading VCF with all called sites, including hom-ref from stdin")
     sys.exit(1)
 

@@ -51,9 +51,10 @@ class MergedMask:
         return all((m.getVal(pos) for m in self.maskIterators))
 
 class VcfIterator:
-    def __init__(self, filename, as_phased):
+    def __init__(self, filename, as_phased, haploid):
         self.file = io.TextIOWrapper(gzip.open(filename, "r"))
         self.as_phased = as_phased
+        self.haploid = haploid
     
     def __iter__(self):
         return self
@@ -72,13 +73,16 @@ class VcfIterator:
         for alt_a in fields[4].split(","):
             alleles.append(alt_a)
         geno = fields[9][:3]
-        if len(geno) != 3 :
+        if self.haploid :
+            return (chrom, pos, tuple(alleles), (int(geno[0]),), True)
+        else :
+            if len(geno) != 3 :
                 print ("Non-diploid SNP found and considered as unphased data: %s" % geno, file=sys.stderr)
                 phased = self.as_phased
                 geno = "%s/%s" % (geno[0], geno[0])
-        else :
+            else :
                 phased = self.as_phased or (geno[1] == "|")
-        return (chrom, pos, tuple(alleles), (int(geno[0]), int(geno[2])), phased)
+            return (chrom, pos, tuple(alleles), (int(geno[0]), int(geno[2])), phased)
 
 class OrderedAlleles:
     def __init__(self):
@@ -127,10 +131,11 @@ def unique(list_of_lists):
     return list(set([tuple(l) for l in list_of_lists]))
 
 class JoinedVcfIterator:
-    def __init__(self, filenames, trios, as_phased):
-        self.vcfIterators = [VcfIterator(f, as_phased) for f in filenames]
+    def __init__(self, filenames, trios, as_phased, haploid):
+        self.vcfIterators = [VcfIterator(f, as_phased, haploid) for f in filenames]
         self.current_lines = [next(v) for v in self.vcfIterators]
         self.trios = trios
+        self.haploid = haploid
     
     def __iter__(self):
         return self
@@ -145,10 +150,16 @@ class JoinedVcfIterator:
         
         for i, l in enumerate(self.current_lines):
             if i not in minIndices:
-                ordered_alleles.addGenotype(ref, ref, True)
+                if self.haploid:
+                    ordered_alleles.addGenotype(ref, "", True)
+                else:
+                    ordered_alleles.addGenotype(ref, ref, True)
             else:
                 alleles, geno, phased = l[2:5]
-                ordered_alleles.addGenotype(alleles[geno[0]], alleles[geno[1]], phased)
+                if self.haploid:
+                    ordered_alleles.addGenotype(alleles[geno[0]], "", True)
+                else:
+                    ordered_alleles.addGenotype(alleles[geno[0]], alleles[geno[1]], phased)
                 try:
                     self.current_lines[i] = next(self.vcfIterators[i])
                 except StopIteration:
@@ -182,6 +193,7 @@ parser.add_argument("--negative_mask", action="append", help="same as mask, but 
 parser.add_argument("--trio", action="append", help="declare trio-relationships. This should be a string with a format <child_index>,<father_index>,<mother_index>, where the three fields are the indices of the samples in the trio. This option will automatically phase parental and maternal haplotypes where possible and remove the child VCF file from the resulting file. Can be given multiple times if you have multiple trios.")
 parser.add_argument("--chr", help="overwrite chromosomes in input files. Useful if chromosome names differ, such as chr1 vs. 1")
 parser.add_argument("--as_phased", action="store_true", help="considered uphased genotypes as phased. Saves resources when only pairs of haplotypes within individuals are considered.")
+parser.add_argument("--haploid", action="store_true", help="expect haploid genotypes. Will only consider the first haplotype if several are available.")
 
 args = parser.parse_args()
 
@@ -199,7 +211,13 @@ if args.as_phased:
     as_phased = True
     sys.stderr.write("Genotypes considered as phased. Only intra-genotype haplotype comparisons are valid!\n")
 
-joinedVcfIterator = JoinedVcfIterator(args.files, trios, as_phased)
+haploid = False
+if args.haploid:
+    haploid = True
+    sys.stderr.write("Genotypes considered as haploid. Only the first haplotype will be recorded!\n")
+
+
+joinedVcfIterator = JoinedVcfIterator(args.files, trios, as_phased, haploid)
 maskIterators = []
 if args.mask:
     for f in args.mask:
